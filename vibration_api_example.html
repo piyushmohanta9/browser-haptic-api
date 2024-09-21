@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibration API Example</title>
+    <script>
+        function vibrateShort() {
+            // Trigger a simple vibration for 200 milliseconds
+            navigator.vibrate(200);
+        }
+
+        function vibratePattern() {
+            // Trigger a vibration pattern: vibrate for 300ms, pause for 100ms, then vibrate for 500ms
+            navigator.vibrate([300, 100, 500]);
+        }
+
+        function stopVibration() {
+            // Stop any ongoing vibration
+            navigator.vibrate(0);
+        }
+    </script>
+</head>
+<body>
+    <h1>Vibration API Example</h1>
+    <button onclick="vibrateShort()">Vibrate for 200ms</button>
+    <button onclick="vibratePattern()">Vibrate Pattern (300ms, pause, 500ms)</button>
+    <button onclick="stopVibration()">Stop Vibration</button>
+</body>
+</html>
