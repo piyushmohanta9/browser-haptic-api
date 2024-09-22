@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,26 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibration API Example</title>
     <script>
+        let loopInterval;
+
         function vibrateShort() {
-            // Trigger a simple vibration for 200 milliseconds
             navigator.vibrate(200);
         }
 
         function vibratePattern() {
-            // Trigger a vibration pattern: vibrate for 300ms, pause for 100ms, then vibrate for 500ms
             navigator.vibrate([300, 100, 500]);
         }
 
+        function vibrateRadar() {
+            navigator.vibrate([100, 50, 200, 50, 300, 100, 400, 100, 500]);
+        }
+
+        function vibrateWave() {
+            navigator.vibrate([100, 50, 200, 50, 300, 50, 400, 50, 500]);
+        }
+
         function stopVibration() {
-            // Stop any ongoing vibration
             navigator.vibrate(0);
+            if (loopInterval) {
+                clearInterval(loopInterval); // Stop the loop if it's running
+            }
+        }
+
+        function handleLoop(patternFunc) {
+            stopVibration(); // Ensure any ongoing vibration stops before starting a new one
+            if (document.getElementById('loopCheckbox').checked) {
+                patternFunc();
+                loopInterval = setInterval(patternFunc, 2000); // Repeat every 2 seconds
+            } else {
+                patternFunc();
+            }
         }
     </script>
 </head>
 <body>
     <h1>Vibration API Example</h1>
-    <button onclick="vibrateShort()">Vibrate for 200ms</button>
-    <button onclick="vibratePattern()">Vibrate Pattern (300ms, pause, 500ms)</button>
+
+    <!-- Vibration buttons -->
+    <button onclick="handleLoop(vibrateShort)">Vibrate for 200ms</button>
+    <button onclick="handleLoop(vibratePattern)">Vibrate Pattern (300ms, pause, 500ms)</button>
+    <button onclick="handleLoop(vibrateRadar)">Vibrate Radar Pattern</button>
+    <button onclick="handleLoop(vibrateWave)">Vibrate Wave Pattern</button>
     <button onclick="stopVibration()">Stop Vibration</button>
+
+    <!-- Loop checkbox -->
+    <div>
+        <input type="checkbox" id="loopCheckbox"> Loop vibration
+    </div>
+
 </body>
 </html>
