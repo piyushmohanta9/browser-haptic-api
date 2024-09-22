@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibration API Example</title>
+    <title>Vibration & Camera API Example</title>
     <script>
         let loopInterval;
 
+        // Vibration functions
         function vibrateShort() {
             navigator.vibrate(200);
         }
@@ -39,22 +40,60 @@
                 patternFunc();
             }
         }
+
+        // Camera API function
+        function startCamera() {
+            const videoElement = document.getElementById('cameraFeed');
+            
+            // Request camera access
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((stream) => {
+                    // Set the video source to the camera stream
+                    videoElement.srcObject = stream;
+                })
+                .catch((error) => {
+                    console.error('Error accessing camera: ', error);
+                    alert('Unable to access camera. Please make sure your browser allows camera access.');
+                });
+        }
+
+        function stopCamera() {
+            const videoElement = document.getElementById('cameraFeed');
+            const stream = videoElement.srcObject;
+
+            // Stop all tracks to stop the camera
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+
+            // Clear the video element
+            videoElement.srcObject = null;
+        }
     </script>
 </head>
 <body>
-    <h1>Vibration API Example</h1>
+    <h1>Vibration & Camera API Example</h1>
 
     <!-- Vibration buttons -->
     <button onclick="handleLoop(vibrateShort)">Vibrate for 200ms</button>
     <button onclick="handleLoop(vibratePattern)">Vibrate Pattern (300ms, pause, 500ms)</button>
     <button onclick="handleLoop(vibrateRadar)">Vibrate Radar Pattern</button>
-    <button onclick="handleLoop(vibrateWave)">Vibrate Wave Pattern</button>
+    <button onclick="handleLoop(vibrateWave()">Vibrate Wave Pattern</button>
     <button onclick="stopVibration()">Stop Vibration</button>
 
     <!-- Loop checkbox -->
     <div>
         <input type="checkbox" id="loopCheckbox"> Loop vibration
     </div>
+
+    <h2>Camera Feed</h2>
+    <!-- Camera controls -->
+    <button onclick="startCamera()">Start Camera</button>
+    <button onclick="stopCamera()">Stop Camera</button>
+
+    <!-- Video element to display camera feed -->
+    <video id="cameraFeed" autoplay style="width: 100%; max-width: 600px; border: 1px solid black;"></video>
 
 </body>
 </html>
