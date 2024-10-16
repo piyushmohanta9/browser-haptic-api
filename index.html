@@ -96,5 +96,25 @@
     <!-- Video element to display camera feed -->
     <video id="cameraFeed" autoplay style="width: 100%; max-width: 600px; border: 1px solid black;"></video>
 
+<button id="getClipboardButton">Get Clipboard Data</button>
+<script>
+  document.getElementById('getClipboardButton').addEventListener('click', async function() {
+    try {
+      // Ensure Clipboard API is supported by the browser
+      if (navigator.clipboard) {
+        // Get text data from the clipboard
+        const text = await navigator.clipboard.readText();
+        console.log('Clipboard content:', text);
+        alert('Clipboard content: ' + text);
+      } else {
+        console.error('Clipboard API is not supported on this browser.');
+      }
+    } catch (err) {
+      console.error('Failed to read clipboard contents:', err);
+    }
+  });
+</script>
+
+
 </body>
 </html>
